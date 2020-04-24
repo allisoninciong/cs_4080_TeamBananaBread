@@ -32,7 +32,7 @@ public class MatrixMult {
         int[][] array2 = new int[n][n];
         int[][] finalArray = new int[n][n];
 
-        long startTime = System.currentTimeMillis();
+
         // filling the first array
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++)
@@ -45,6 +45,7 @@ public class MatrixMult {
                 array2[i][j] = rand.nextInt(nxtRandom);
         }
 
+        long startTime = System.currentTimeMillis();
         // multiplying both arrays via the classic way
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -53,7 +54,9 @@ public class MatrixMult {
                 }
             }
         }
+        long endTime = System.currentTimeMillis();
 
+        /**
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < n; k++) {
@@ -63,11 +66,11 @@ public class MatrixMult {
             }
             System.out.println();
         }
+         **/
 
         sc.close();
 
-        long endTime = System.currentTimeMillis();
-        double timeDifference = (endTime - startTime);
-        System.out.println("Runtime with cast: " + timeDifference + " s");
+        double timeDifference = (endTime - startTime) / 1000;
+        System.out.println("Runtime: " + timeDifference + " s");
     }
 }

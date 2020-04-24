@@ -5,7 +5,7 @@ public class Coercion {
     public static void main(String[] args) throws Exception {
         Random rand = new Random();
         int nxtRandom = 10; // Numbers will be between 0 and 10
-        final String numbers = "0123456789";
+        final String[] numbers = {"0","1","2","3","4","5","6","7","8","9","10"};
         Scanner sc = new Scanner(System.in);
         int n = 4; // n represents matrix rows + columns
         System.out.println("Enter a number (higher than 0) for your matrix: ");
@@ -29,10 +29,9 @@ public class Coercion {
         }
 
         int[][] array1 = new int[n][n];
-        char[][] array2 = new char[n][n];
+        String[][] array2 = new String[n][n];
         int[][] finalArray = new int[n][n];
 
-        long startTime = System.currentTimeMillis();
         // filling the first array
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++)
@@ -42,18 +41,21 @@ public class Coercion {
         // filling the second array
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++)
-                array2[i][j] = numbers.charAt(rand.nextInt(nxtRandom));
+                array2[i][j] = numbers[rand.nextInt(nxtRandom)];
         }
 
+        long startTime = System.currentTimeMillis();
         // multiplying both arrays via the classic way
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < n; k++) {
-                    finalArray[i][j] += array1[i][k] * array2[k][j];
+                    finalArray[i][j] += array1[i][k] * Integer.parseInt(array2[k][j]);
                 }
             }
         }
+        long endTime = System.currentTimeMillis();
 
+        /**
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < n; k++) {
@@ -63,11 +65,11 @@ public class Coercion {
             }
             System.out.println();
         }
+         **/
 
         sc.close();
 
-        long endTime = System.currentTimeMillis();
-        double timeDifference = (endTime - startTime);
+        double timeDifference = (endTime - startTime) / 1000;
         System.out.println("Runtime with cast: " + timeDifference + " s");
     }
 }
