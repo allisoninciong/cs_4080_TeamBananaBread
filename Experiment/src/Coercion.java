@@ -1,14 +1,21 @@
 import java.util.*;
 
+//int to float
+//
 public class Coercion {
 
+
     public static void main(String[] args) throws Exception {
+        long startTime = 0;
+        long endTime = 0;
+        double tempTimeElapsed = 0;
+        double timeElapsed = 0;
+
         Random rand = new Random();
         int nxtRandom = 10; // Numbers will be between 0 and 10
-        final String[] numbers = {"0","1","2","3","4","5","6","7","8","9","10"};
         Scanner sc = new Scanner(System.in);
         int n = 4; // n represents matrix rows + columns
-        System.out.println("Enter a number (higher than 0) for your matrix: ");
+        System.out.print("Enter a number (higher than 0) for the size your matrix: ");
         do {
             try {
                 n = sc.nextInt();
@@ -29,47 +36,55 @@ public class Coercion {
         }
 
         int[][] array1 = new int[n][n];
-        String[][] array2 = new String[n][n];
+        float[][] array2 = new float[n][n];
         int[][] finalArray = new int[n][n];
 
-        // filling the first array
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++)
-                array1[i][j] = rand.nextInt(nxtRandom);
-        }
+        int counter = 0;
 
-        // filling the second array
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++)
-                array2[i][j] = numbers[rand.nextInt(nxtRandom)];
-        }
+        while (counter < 5) {
+            System.out.println(counter);
+            // filling the first array
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++)
+                    array1[i][j] = rand.nextInt(nxtRandom);
+            }
 
-        long startTime = System.currentTimeMillis();
-        // multiplying both arrays via the classic way
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    finalArray[i][j] += array1[i][k] * Integer.parseInt(array2[k][j]);
+            // filling the second array
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++)
+                    array2[i][j] = rand.nextFloat();
+            }
+
+            startTime = System.currentTimeMillis();
+            // multiplying both arrays via the classic way
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        finalArray[i][j] += (float) array1[i][k] * (array2[k][j]);
+                    }
                 }
             }
+
+            endTime = System.currentTimeMillis();
+            tempTimeElapsed = endTime - startTime;
+            timeElapsed = timeElapsed + tempTimeElapsed;
+            counter++;
         }
-        long endTime = System.currentTimeMillis();
 
         /**
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    finalArray[i][j] += array1[i][k] * array2[k][j];
-                }
-                System.out.print(finalArray[i][j] + " ");
-            }
-            System.out.println();
-        }
+         for (int i = 0; i < n; i++) {
+         for (int j = 0; j < n; j++) {
+         for (int k = 0; k < n; k++) {
+         finalArray[i][j] += array1[i][k] * array2[k][j];
+         }
+         //System.out.print(finalArray[i][j] + " ");
+         }
+         //System.out.println();
+         }
          **/
 
         sc.close();
-
-        double timeDifference = (endTime - startTime) / 1000;
-        System.out.println("Runtime with cast: " + timeDifference + " s");
+        timeElapsed = ((timeElapsed) / 1000) / 5;
+        System.out.println("Runtime with cast: " + timeElapsed + " s");
     }
 }
