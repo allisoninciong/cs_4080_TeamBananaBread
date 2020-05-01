@@ -5,6 +5,8 @@ Created on Wed Apr 29 16:22:17 2020
 @author: kevin
 """
 import random
+import time
+import csv
 
 #creates a matrix of shape (numRows, numColumns)
 def create_matrix(numRows, numColumns, datatype="int"):
@@ -17,7 +19,7 @@ def create_matrix(numRows, numColumns, datatype="int"):
     return matrix
 
 
-
+# returns the product of the matrix multiplication of the two parameters
 def multiply_matrix(matrix1, matrix2):
     matrix1NumRows = len(matrix1)
     matrix1NumColumns = len(matrix1[0])
@@ -39,5 +41,43 @@ def multiply_matrix(matrix1, matrix2):
         resultMatrix.append(row)
     return resultMatrix
 
+#returns time to perform a multiplication of two square matrices of size
+def time_matmul(datatype1, datatype2, size):
+    mat1 = create_matrix(size, size, datatype1)
+    mat2 = create_matrix(size, size, datatype2)
+    
+    timing = time.perf_counter()
+    final_mat = multiply_matrix(mat1, mat2)
+    return time.perf_counter() - timing
 
 
+#returns avg time for numMultiplications number of  matrix multiplications
+def time_many_matmul(datatype1, datatype2, size, numMultiplications):
+    total = 0
+    for i in range(numMultiplications):
+        total += time_matmul(datatype1, datatype2, size)
+    return total / numMultiplications
+    
+#returns a list of avg times for numMultiplications number of matrix multiplications
+#   for matrices of size: 512, 1024, 2048, 4096 
+def time_many_sizes(datatype1, datatype2, numMultiplications, base=512, numOfSizes=4):
+    result =[]
+    for i in range(numOfSizes):
+        result.append(time_many_matmul(datatype1, datatype2, (base * 2**i), numMultiplications))
+    return result
+
+result = {}
+
+numMultiplications = 5
+
+result["int_int"] = time_many_sizes("int", "int", numMultiplications, base=2)
+result["float_float"] = time_many_sizes("float", "float", numMultiplications, base = 2)
+result["int_float"] = time_many_sizes("int", "float", numMultiplications, base=2)
+
+file = open("python_data.csv", "w", newline ='')
+writer = csv.writer(file)
+for key, values in result.items():
+    writer.writerow([key] + values)
+
+file.close()
+print(result)
