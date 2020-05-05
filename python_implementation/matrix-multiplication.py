@@ -59,20 +59,21 @@ def time_many_matmul(datatype1, datatype2, size, numMultiplications):
     return total / numMultiplications
     
 #returns a list of avg times for numMultiplications number of matrix multiplications
-#   for matrices of size: 512, 1024, 2048, 4096 
-def time_many_sizes(datatype1, datatype2, numMultiplications, base=512, numOfSizes=4):
+#   for matrices of size (base * 2**i)
+def time_many_sizes(datatype1, datatype2, numMultiplications, base=32, numOfSizes=6):
     result =[]
     for i in range(numOfSizes):
         result.append(time_many_matmul(datatype1, datatype2, (base * 2**i), numMultiplications))
     return result
 
+
 result = {}
 
-numMultiplications = 5
+numMultiplications = 10
 
-result["int_int"] = time_many_sizes("int", "int", numMultiplications, base=2)
-result["float_float"] = time_many_sizes("float", "float", numMultiplications, base = 2)
-result["int_float"] = time_many_sizes("int", "float", numMultiplications, base=2)
+result["int_int"] = time_many_sizes("int", "int", numMultiplications)
+result["float_float"] = time_many_sizes("float", "float", numMultiplications)
+result["int_float"] = time_many_sizes("int", "float", numMultiplications)
 
 file = open("python_data.csv", "w", newline ='')
 writer = csv.writer(file)
