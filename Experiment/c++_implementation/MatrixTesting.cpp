@@ -1,6 +1,5 @@
 // MatrixTesting.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
-#include "pch.h"
 #include <iostream>
 #include <stdio.h>      
 #include <stdlib.h>     
@@ -8,41 +7,17 @@
 #include <algorithm> 
 #include <chrono> 
 #include <iostream> 
+#include <cmath>
 
 using namespace std;
 using namespace std::chrono;
 
-#define N 1024 // base num
+const int NUM_TRIALS = 10;
 
-void intMatrix();
-void floatMatrix();
-void mainMatrix();
-
-int main() {
-   cout << "Enter a (int*float), b (int*int), or c(float*float): ";
-   char x;
-   cin >> x;
-
-   switch (x) {
-   case 'a':
-      mainMatrix();
-      break;
-   case 'b':
-      intMatrix();
-      break;
-   case 'c':
-      floatMatrix();
-      break;
-   default:
-      cout << "Wrong number given" << endl;
-   }
-
-   return 0;
-}
-
-void intMatrix()
+void intMatrix(int N)
 {
-   for (int loop = 0; loop < 10; loop++) {
+   long avgTime = 0;
+   for (int loop = 0; loop < NUM_TRIALS; loop++) {
 
       // initialize random seed
       srand(time(NULL));
@@ -89,16 +64,16 @@ void intMatrix()
 
       auto stop = high_resolution_clock::now();
       auto duration = duration_cast<microseconds>(stop - start);
-      std::cout << duration.count() << " microseconds";
-      if (loop <= 9)
-         std::cout << " + ";
+      avgTime += duration.count();
       delete[] arrayInt1, arrayInt2, finalArrayInt;
    }
+   cout << avgTime / NUM_TRIALS;
 }
 
-void floatMatrix()
+void floatMatrix(int N)
 {
-   for (int loop = 0; loop < 10; loop++) {
+   long avgTime = 0;
+   for (int loop = 0; loop < NUM_TRIALS; loop++) {
 
       // initialize random seed
       srand(time(NULL));
@@ -144,16 +119,16 @@ void floatMatrix()
 
       auto stop = high_resolution_clock::now();
       auto duration = std::chrono::duration_cast<microseconds>(stop - start);
-      std::cout << duration.count() << " microseconds";
-      if (loop <= 9)
-         std::cout << " + ";
+      avgTime += duration.count();
       delete[] array1, array2, finalArray;
    }
+   cout << avgTime / NUM_TRIALS;
 }
 
-void mainMatrix()
+void mainMatrix(int N)
 {
-   for (int loop = 0; loop < 10; loop++) {
+   long avgTime = 0;
+   for (int loop = 0; loop < NUM_TRIALS; loop++) {
 
       // initialize random seed
       srand(time(NULL));
@@ -199,9 +174,49 @@ void mainMatrix()
 
       auto stop = high_resolution_clock::now();
       auto duration = duration_cast<microseconds>(stop - start);
-      std::cout << duration.count() << " microseconds";
-      if (loop <= 9)
-         std::cout << " + ";
+      avgTime += duration.count();
       delete[] array1, array2, finalArray;
    }
+   cout << avgTime / NUM_TRIALS;
+}
+void timeManySizes(int base, int numIterations)
+{
+   cout << "int_int,";
+   for (int i = 0; i < numIterations; i++)
+   {
+      intMatrix(base * pow(2.0,i));
+      if (i < numIterations-1)
+      {
+         cout << ",";
+      }
+   }
+   cout << endl;
+   cout << "float_float,";
+   for (int i = 0; i < numIterations; i++)
+   {
+      floatMatrix(base * pow(2.0,i));
+      if (i < numIterations-1)
+      {
+         cout << ",";
+      }
+   }
+   cout << endl;
+   cout << "int_float,";
+   for (int i = 0; i < numIterations; i++)
+   {
+      intMatrix(base * pow(2.0,i));
+      if (i < numIterations-1)
+      {
+         cout << ",";
+      }
+      
+   }
+   cout << endl;
+}
+
+int main() 
+{
+   timeManySizes(32, 6);
+   //system("pause");
+   return 0;
 }
