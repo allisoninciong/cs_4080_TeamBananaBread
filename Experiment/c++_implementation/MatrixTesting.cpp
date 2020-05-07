@@ -217,6 +217,6 @@ void timeManySizes(int base, int numIterations)
 int main() 
 {
    timeManySizes(32, 6);
-   //system("pause");
+   system("pause");
    return 0;
 }
